@@ -1,0 +1,64 @@
+---
+- name: Configure HAProxy for Patroni
+  hosts: haproxy_nodes
+  become: true
+  tasks:
+    - name: Install HAProxy
+      apt:
+        name: haproxy
+        state: present
+
+    - name: Configure HAProxy
+      copy:
+        dest: /etc/haproxy/haproxy.cfg
+        content: |
+          global
+            maxconn 15000
+
+          defaults
+            log global
+            mode tcp
+            retries 2
+            timeout client 30m
+            timeout connect 4s
+            timeout server 30m
+            timeout check 5s
+
+          listen stats
+            bind *:7000
+            mode http
+            stats enable
+            stats uri /haproxy
+            stats refresh 5s
+
+          listen write
+            bind *:5000
+            option httpchk OPTIONS /master
+            http-check expect status 200
+            default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+              server pg-node1 172.20.10.6:6437 maxconn 800 check port 8008
+              server pg-node2 172.20.10.7:6437 maxconn 800 check port 8008
+              server pg-node3 172.20.10.8:6437 maxconn 800 check port 8008
+
+          listen read
+            bind *:5001
+            option httpchk OPTIONS /replica
+            http-check expect status 200
+            default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+              server pg-node1 172.20.10.6:6437 maxconn 800 check port 8008
+              server pg-node2 172.20.10.7:6437 maxconn 800 check port 8008
+              server pg-node3 172.20.10.8:6437 maxconn 800 check port 8008
+        mode: "0644"
+
+    - name: Reload and Restart HAProxy
+      systemd:
+        name: haproxy
+        state: restarted
+        enabled: true
+
+    - name: Verify HAProxy status
+      systemd:
+        name: haproxy
+        state: started
+        enabled: true
+

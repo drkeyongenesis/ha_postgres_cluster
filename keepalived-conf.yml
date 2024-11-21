@@ -1,0 +1,24 @@
+---
+- name: Configure Keepalived for Virtual IP
+  hosts: keepalived_nodes
+  become: true
+  vars:
+    vip: "172.20.10.31"  # Replace with your virtual IP
+    interface: "enp0s8"     # Replace with the appropriate network interface
+  tasks:
+    - name: Install Keepalived
+      apt:
+        name: keepalived
+        state: present
+
+    - name: Configure Keepalived
+      template:
+        src: files/keepalived.conf.j2
+        dest: /etc/keepalived/keepalived.conf
+        mode: '0644'
+
+    - name: Restart Keepalived
+      systemd:
+        name: keepalived
+        state: restarted
+        enabled: true

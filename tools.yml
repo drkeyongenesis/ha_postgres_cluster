@@ -1,0 +1,87 @@
+---
+- name: TOOLS - Grant permissions for postgresql_dba tool
+  ansible.builtin.file:
+    path: /var/lib/postgresql/postgres_dba
+    state: directory
+    recurse: yes
+    owner: postgres
+    group: postgres
+
+- name: TOOLS - Add safe directory
+  community.general.git_config:
+    name: safe.directory
+    scope: global
+    value: /var/lib/postgresql/postgres_dba
+
+- name: TOOLS - Add postgresql_dba tools reference
+  git:
+    repo: 'https://github.com/NikolayS/postgres_dba.git'
+    dest: /var/lib/postgresql/postgres_dba
+    update: no
+
+- name: TOOLS - Add pg_activity cli tool for DEB
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - pg-activity
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: TOOLS - Clone pg_squeeze repack tool
+  get_url:
+    url: 'https://github.com/cybertec-postgresql/pg_squeeze/archive/refs/tags/debian/1.6.1-2.tar.gz'
+    dest: /tmp/pg_squeeze.tar.gz
+
+- name: TOOLS - Unarchive pg_squeeze
+  unarchive:
+    src: /tmp/pg_squeeze.tar.gz
+    dest: /tmp/
+    remote_src: true
+
+- name: TOOLS - Build pg_squeeze repack tool
+  shell: "cd /tmp/pg_squeeze-debian-1.6.1-2 && make && make install"
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: TOOLS - Create a directory for pgwatch2
+  file:
+    path: /opt/pgwatch2/
+    owner: root
+    group: root
+    state: directory
+    mode: '0755'
+
+- name: TOOLS - Clone pgwatch2 repository under opt directory
+  git:
+    repo: 'https://github.com/cybertec-postgresql/pgwatch2.git'
+    dest: /opt/pgwatch2/
+
+- name: TOOLS - Download pgwatch2-daemon debian binary
+  get_url:
+    url: https://github.com/cybertec-postgresql/pgwatch2/releases/download/v1.9.0/pgwatch2_1.9.0_linux_64-bit.deb
+    dest: /tmp/pgwatch2_1.9.0_linux_64-bit.deb
+    mode: '0750'
+
+- name: TOOLS - Install pgwatch2-daemon debian package
+  apt:
+    deb: /tmp/pgwatch2_1.9.0_linux_64-bit.deb
+
+- name: TOOLS - Create systemd service file for pgwatch2-daemon
+  template:
+    src: files/pgwatch2.j2
+    dest: /etc/systemd/system/pgwatch2.service
+    owner: root
+    group: root
+- name: TOOLS - Create instances.yaml file to send metrics
+  template:
+    src: files/instances.j2
+    dest: /opt/pgwatch2/instances.yaml
+    owner: root
+    group: root
+
+- name: TOOLS - Copy file with owner and permissions
+  template:
+    src: files/configure_pgwatch2.py
+    dest: /opt/pgwatch2/configure_pgwatch2.py
+    owner: root
+    group: root
+    mode: '0750'
