@@ -37,11 +37,21 @@ Implementing VRRP (Virtual Router Redundancy Protocol) for Linux. In our configu
 > [!NOTE]
 > Your application must have support sending read requests to a custom port 5001, and write requests to port 5000.
 
+### Port requirements
+List of required TCP ports that must be open for the database cluster:
+
+- `5432` (postgresql)
+- `6437` (pgbouncer)
+- `8008` (patroni rest api)
+- `2379`, `2380` (etcd)
+
 List of ports when using HAProxy:
-- port 5000 (read / write) master
-- port 5001 (read only) all replicas
-- port 5002 (read only) synchronous replica only
-- port 5003 (read only) asynchronous replicas only
+
+- `5000` (haproxy - (read/write) master)
+- `5001` (haproxy - (read only) all replicas)
+- `5002` (haproxy - (read only) synchronous replica only)
+- `5003` (haproxy - (read only) asynchronous replicas only)
+- `7000` (optional, haproxy stats)
 
 
 ### Installation Steps:
