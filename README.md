@@ -140,6 +140,6 @@ ansible-playbook -i inventory.yaml pgbouncer-conf.yml -kK
 
 ## References
 
-https://example.com](https://github.com/vitabaks/postgresql_cluster/blob/master/README.md
+https://github.com/vitabaks/postgresql_cluster/blob/master/README.md
 
 
