@@ -7,9 +7,11 @@
 
 ---
 
-### HA CLUSTER ARCHITECTURE
+### HA PostgreSQL CLUSTER ARCHITECTURE
+
 
 <img width="1010" alt="image" src="https://github.com/user-attachments/assets/39f55240-4063-41bd-a273-006697a0f73e">
+
 
 
 #### 1. PostgreSQL High-Availability with Load Balancing
