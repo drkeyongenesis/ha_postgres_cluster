@@ -13,6 +13,7 @@
 <img width="1010" alt="image" src="https://github.com/user-attachments/assets/39f55240-4063-41bd-a273-006697a0f73e">
 
 
+---
 
 #### 1. PostgreSQL High-Availability with Load Balancing
 
@@ -41,9 +42,6 @@ List of ports when using HAProxy:
 - port 5001 (read only) all replicas
 - port 5002 (read only) synchronous replica only
 - port 5003 (read only) asynchronous replicas only
-
-
-References: https://github.com/vitabaks/postgresql_cluster/blob/master/README.md
 
 
 ### Installation Steps:
@@ -125,5 +123,13 @@ ansible-playbook -i inventory.yaml pgbouncer-conf.yml -kK
 > - `-k` (`--ask-pass`): Ask for connection password.  
 > - `-K` (`--ask-become-pass`): Ask for privilege escalation password.  
 > Additionally, the `sshpass` program must be installed.
+
+</p></details>
+
+---
+
+## References
+
+https://example.com](https://github.com/vitabaks/postgresql_cluster/blob/master/README.md
 
 
