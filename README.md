@@ -23,7 +23,7 @@ This solution enables load distribution for read operations and also allows for 
 
 - [**Patroni**](https://github.com/zalando/patroni) is a template for you to create your own customized, high-availability solution using Python and - for maximum accessibility - a distributed configuration store like ZooKeeper, etcd, Consul or Kubernetes. Used for automate the management of PostgreSQL instances and auto failover.
 
-- [**etcd**](https://github.com/etcd-io/etcd) is a distributed reliable key-value store for the most critical data of a distributed system. etcd is written in Go and uses the [Raft](https://raft.github.io/) consensus algorithm to manage a highly-available replicated log. It is used by Patroni to store information about the status of the cluster and PostgreSQL configuration parameters.
+- [**etcd**](https://github.com/etcd-io/etcd) is a distributed reliable key-value store for the most critical data of a distributed system. It is used by Patroni to store information about the status of the cluster and PostgreSQL configuration parameters.
 
 - [**PgBouncer**](https://pgbouncer.github.io/features.html) is a connection pooler for PostgreSQL.
 
