@@ -8,7 +8,7 @@
     ip_1: 172.20.10.6
     ip_2: 172.20.10.7
     ip_3: 172.20.10.8
-    port_num: 5432
+    port_num: 5566
   tasks:
     - name: Add PostgreSQL Repository for Ubuntu 24.04 Release
       shell: |
