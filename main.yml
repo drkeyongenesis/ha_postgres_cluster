@@ -3,7 +3,7 @@
   become: yes
   vars:
     pg_version: 16
-    patroni_version: 4.0.3
+    patroni_version: 4.0.4
     scope_name: mycluster
     ip_1: 172.20.10.6
     ip_2: 172.20.10.7
