@@ -3,22 +3,24 @@ global_defs {
     enable_script_security
 }
 
+vrrp_script chk_haproxy {
+#   script "killall -0 haproxy"
+    script "/usr/bin/pgrep haproxy"
+#    script "/usr/bin/pidof haproxy"
+    interval 2
+    weight 2
+}
+
 vrrp_instance VI_1 {
     state MASTER
-    interface {{ interface }}
+    interface enp0s8
     virtual_router_id 51
     priority 100
     advert_int 1
     virtual_ipaddress {
-        {{ vip }}
+        172.20.10.31
     }
     track_script {
         chk_haproxy
     }
-}
-
-vrrp_script chk_haproxy {
-    script "/usr/bin/pgrep haproxy"
-    interval 2
-    weight 2
 }
