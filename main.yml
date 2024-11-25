@@ -139,7 +139,7 @@
                 use_slots: true
                 parameters:
                   hot_standby: "on"
-                  listen_addresses = '*'
+                  listen_addresses: '*'
                   port: '{{ port_num }}'
                   archive_mode: "on"
                   archive_timeout: 1800s
