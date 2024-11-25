@@ -102,11 +102,11 @@ Specify (non-public) IP addresses and connection settings such as (`ansible_user
 7. Run playbooks in-order as below:
 
 ```
-ansible-playbook -i inventory.yaml main.yml -kK
+ansible-playbook -i inventory-etcd.yml configure-etcd.yml -kK
 ```
 
 ```
-ansible-playbook -i inventory-etcd.yml configure-etcd.yml -kK
+ansible-playbook -i inventory.yaml main.yml -kK
 ```
 
 ```
