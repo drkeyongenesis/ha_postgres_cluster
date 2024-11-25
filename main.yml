@@ -232,7 +232,7 @@
         port: 8008
         host: "{{ ip_addr }}"
         state: started
-        timeout: 60
+        timeout: 120
 
     - name: Verify Patroni status
       command: patronictl -c /etc/patroni.yml list
