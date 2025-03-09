@@ -4,7 +4,6 @@
   become: true
   vars:
     etcd_version: "3.5.17"
-    etcd_download_url: "https://github.com/etcd-io/etcd/releases/download"
     etcd_install_dir: "/usr/local/bin"
     etcd_data_dir: "/var/lib/etcd"
     etcd_config_file: "/etc/etcd/etcd.conf.yml"
@@ -24,12 +23,7 @@
       with_items:
         - "{{ etcd_data_dir }}"
         - "/etc/etcd"
-
-    - name: Download etcd binary (ARM version)
-      get_url:
-        url: "{{ etcd_download_url }}/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-arm64.tar.gz"
-        dest: "/tmp/etcd-v{{ etcd_version }}-linux-arm64.tar.gz"
-
+        
     - name: Extract etcd binary
       unarchive:
         src: "/tmp/etcd-v{{ etcd_version }}-linux-arm64.tar.gz"
